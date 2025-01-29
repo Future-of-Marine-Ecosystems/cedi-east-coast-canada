@@ -2,6 +2,10 @@
 
 [Amy L. Irvine](https://oceansnorth.org/our-team/), [Gabriel Reygondeau](https://idsc.miami.edu/gabriel-reygondeau/), [Ryan R.E. Stanley](https://www.researchgate.net/profile/Ryan-Stanley), [Derek P. Tittensor](https://www.fomelab.org/our-people-1/derek-tittensor)
 
+**Code and data citation**
+
+Irvine, A.L., Reygondeau, G., Stanley, R.R.E., and D.P. Tittensor. Future climate-driven ecological disruption in a network of Marine Protected Areas on Canada’s east coast - code & data. [![DOI](https://zenodo.org/badge/920247465.svg)](https://doi.org/10.5281/zenodo.14767204)
+
 Code and data to calculate the CEDI index from Irvine et al. Given a set of spatial areas and species/trait lists for different time periods / scenarios in each of these spatial areas, the code here calculates the CEDI index (and other FD metrics) for those areas. Here it is applied to Canada's east coast protected area network, with the time periods and scenarios being present day, mid-century under _RCP2.6_, mid-century under _RCP8.5_, end-century under _RCP2.6_, and end-century under _RCP8.5_. The species and traits lists are provided as R objects to demonstrate the form of the data, and are originally derived from species distribution models and [Fishbase](https://fishbase.se/)/[Sealifebase](https://www.sealifebase.se/) supplemented by literature review, as described in the publication.
 
 **Abstract**
