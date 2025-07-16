@@ -1,8 +1,9 @@
 #code setup -------
 #load libraries
 library(sf)
-library(tidyr)
+library(tidyverse)
 library(rnaturalearth)
+library(rnaturalearthhires)
 library(patchwork)
 library(viridis)
 library(ggspatial)
@@ -71,40 +72,41 @@ bioregion_poly <- bioregion_lims%>%st_as_sfc()
 
 
 #basemap
-basemap <- ne_states(country = "Canada",returnclass = "sf")%>%
-  dplyr::select(name_en,geometry)%>%
-  st_as_sf()%>%
-  st_union()%>%
-  st_transform(latlong)%>%
-  st_as_sf()%>%
-  mutate(country="Canada")%>%
-  rbind(.,ne_states(country = "United States of America",returnclass = "sf")%>%
-          dplyr::select(name_en,geometry)%>%
-          st_as_sf()%>%
-          st_union()%>%
-          st_transform(latlong)%>%
-          st_as_sf()%>%
-          mutate(country="US"),
-        ne_states(country = "Greenland",returnclass = "sf")%>%
-          dplyr::select(name_en,geometry)%>%
-          st_as_sf()%>%
-          st_union()%>%
-          st_transform(latlong)%>%
-          st_as_sf()%>%
-          mutate(country="Greenland"),
-        ne_states(country = "Iceland",returnclass = "sf")%>%
-          dplyr::select(name_en,geometry)%>%
-          st_as_sf()%>%
-          st_union()%>%
-          st_transform(latlong)%>%
-          st_as_sf()%>%
-          mutate(country="Iceland"))%>%
+# basemap <- ne_states(country = "Canada",returnclass = "sf")%>%
+#   dplyr::select(name_en,geometry)%>%
+#   st_as_sf()%>%
+#   st_union()%>%
+#   st_transform(latlong)%>%
+#   st_as_sf()%>%
+#   mutate(country="Canada")%>%
+#   rbind(.,ne_states(country = "United States of America",returnclass = "sf")%>%
+#           dplyr::select(name_en,geometry)%>%
+#           st_as_sf()%>%
+#           st_union()%>%
+#           st_transform(latlong)%>%
+#           st_as_sf()%>%
+#           mutate(country="US"),
+#         ne_states(country = "Greenland",returnclass = "sf")%>%
+#           dplyr::select(name_en,geometry)%>%
+#           st_as_sf()%>%
+#           st_union()%>%
+#           st_transform(latlong)%>%
+#           st_as_sf()%>%
+#           mutate(country="Greenland"),
+#         ne_states(country = "Iceland",returnclass = "sf")%>%
+#           dplyr::select(name_en,geometry)%>%
+#           st_as_sf()%>%
+#           st_union()%>%
+#           st_transform(latlong)%>%
+#           st_as_sf()%>%
+#           mutate(country="Iceland"))%>%
+#   st_transform(CanProj)
+
+
+basemap <- ne_countries(scale = "large", # or "medium", "small"
+                        country = c("Canada", "United States", "Greenland", "Iceland"),
+                        returnclass = "sf") %>%
   st_transform(CanProj)
-
-eez <- read_sf("Data/Shapefiles/Canada_EEZ.shp")%>%
-       st_transform(CanProj)
-
-plot_region <- eez%>%st_bbox()
 
 #Create the plots 
 
@@ -112,7 +114,7 @@ plot_region <- eez%>%st_bbox()
 p1 <- ggplot()+
   geom_sf(data=bioregion,fill="grey95")+
   geom_sf(data=basemap)+
-  geom_sf(data=basemap%>%filter(country == "Canada"),fill="grey60")+
+  geom_sf(data=basemap%>%filter(name == "Canada"),fill="grey60")+
   geom_sf(data=bioregion_poly,fill=NA,linewidth=0.5)+
   geom_sf(data=eez,fill=NA)+
   geom_sf(data=CCA_simple,fill="deepskyblue1",linewidth=0.4)+ #just existing and implemented sites.
@@ -129,11 +131,11 @@ p1 <- ggplot()+
 
 #Scotian Shelf Bay of Fundy scale  
 p2 <- ggplot()+
-  geom_sf(data=bioregion,fill="grey95",alpha=0.3)+
+  geom_sf(data=bioregion,fill="grey95",alpha=0.3,linewidth=0.25)+
   geom_sf(data=basemap)+
-  geom_sf(data=basemap%>%filter(country == "Canada"),fill="grey60")+
+  geom_sf(data=basemap%>%filter(name == "Canada"),fill="grey60")+
   geom_sf(data=network,aes(fill=class),linewidth=0.4)+
-  geom_sf(data=network%>%filter(focal == "focus"),linewidth=0.6,fill=NA)+
+  geom_sf(data=network%>%filter(focal == "focus"),linewidth=0.9,fill=NA)+
   theme_bw()+
   coord_sf(xlim=bioregion_lims[c(1,3)],ylim=bioregion_lims[c(2,4)])+
   annotation_scale()+
@@ -151,5 +153,5 @@ p3 <-  p2 + inset_element(p1,   left = 0.01,        # Keep left close to the edg
                           top = 1.1,          # Increase top to make the inset taller
                           align_to = 'full')   # Ensure it aligns to the full area
 
-ggsave("output/Fig1.png",p3,height=8,width=6.5,units="in",dpi=300)
+ggsave("output/Fig1.png",p3,height=8,width=6.5,units="in",dpi=1200)
 
