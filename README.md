@@ -20,6 +20,6 @@ __Figure 1__ Conceptual approach for the Climate Ecological Disruption Index (CE
 
 __Figure 2__ The Fisheries and Oceans Canada Scotian Shelf-Bay of Fundy bioregion (“Maritimes Region”; black outline) with a superimposed map of Canada showing existing national conservation sites in blue. The Maritime Conservation Network within the Maritimes Region is composed of Marine Protected Areas (MPAs), Other Effective area-based Conservation Measures (OECMs), and proposed Areas of Interest (AOIs) that are likely to become MPAs (blue), and draft sites (orange). The Jordan Basin Marine Refuge (JBMR), Corsair and Georges Canyons Conservation Area (CGCCA), Eastern Canyons Marine Refuge (ECMR), and Cold Seeps (CS) sites are labelled.
 
-![](/output/Fig3.png)
+![](/output/Figure3-detailed.png)
 
 __Figure 3__ Mean relative projected ecological disruption (Climate Ecosystem Disruption Index or CEDI values) for the Maritime Conservation Network within the Fisheries and Oceans Canada Maritimes Region (black outline), from present-day to mid-century (left column) and end-century (right column) under SSP1-2.6 (top row) and SSP5-8.5 (bottom row). ¬The Jordan Basin Marine Refuge (JBMR) and Cold Seeps (CS) proposed site are highlighted for having high CEDI (potential for ecological disruption). The Corsair and Georges Canyons Conservation Area (CCGCCA) and Eastern Canyons Marine Refuge (ECMR) are highlighted for having low CEDI (potential for ecological disruption).
