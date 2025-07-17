@@ -89,7 +89,7 @@ mpa_names <- names(dissimilarity_by_mpa)
 #           gather("sim","cedi")%>%
 #           filter(grepl("CUR",sim))%>%
 #           mutate(time_period = ifelse(grepl("MID",sim),"Mid-century","End-century"),
-#                  rcp = ifelse(grepl("26",sim),"SSPI-2.6","SSPI-8.5"),
+#                  rcp = ifelse(grepl("26",sim),"SSP1-2.6","SSP5-8.5"),
 #                  SiteName_E=i)%>%
 #           dplyr::select(SiteName_E,rcp,time_period,cedi)
 # 
@@ -104,8 +104,8 @@ cedi_df <- read.csv("data/TEDI_by_site_scenario.csv")%>%
             rename(SiteName_E = MPA_name)%>%
             mutate(time_period = ifelse(grepl("MID",sim),"Mid-century","End-century"),
                    time_period = factor(time_period,levels=c("Mid-century","End-century")),
-                   rcp = ifelse(grepl("26",sim),"SSPI-2.6","SSPI-8.5"),
-                   rcp = factor(rcp,levels=c("SSPI-2.6","SSPI-8.5")),
+                   rcp = ifelse(grepl("26",sim),"SSP1-2.6","SSP5-8.5"),
+                   rcp = factor(rcp,levels=c("SSP1-2.6","SSP5-8.5")),
                    SiteName_E = factor(SiteName_E,levels=mpa_names))%>%
             dplyr::select(SiteName_E,rcp,time_period,cedi)%>%
             arrange(SiteName_E,time_period,rcp)
@@ -120,7 +120,7 @@ network2 <- network%>%
 cedi_plot <- ggplot()+
   geom_sf(data=bioregion,fill="grey95",alpha=0.3,linewidth=0.25)+
   geom_sf(data=basemap)+
-  geom_sf(data=basemap%>%filter(name == "Canada"),fill="grey60")+
+  geom_sf(data=basemap%>%filter(name == "Canada"),fill="black")+
   geom_sf(data=network2%>%filter(focal !="focus"),aes(fill=cedi),linewidth=0.4,col="black")+
   geom_sf(data=network2%>%filter(focal == "focus"),aes(fill=cedi),linewidth=0.9,col="black")+
   theme_bw()+
@@ -133,7 +133,7 @@ cedi_plot <- ggplot()+
         axis.title = element_blank(),
         strip.background = element_rect(fill="white"))
 
-ggsave("output/Figure3.png",cedi_plot+ scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3")),
+ggsave("output/Figure3.png",cedi_plot+ scale_fill_gradientn(colors = c("dodgerblue3", "khaki1", "darkorange", "red"), na.value = "white"),
        height=8,width=8,units="in",dpi=2400)
 
 #with a viridis scale
@@ -155,7 +155,7 @@ jordan_inset <- network%>%
 jordan_lims <- jordan_inset%>%
                st_bbox()
 
-rcps <- c("SSPI-2.6","SSPI-8.5")
+rcps <- c("SSP1-2.6","SSP5-8.5")
 time_periods <- c("Mid-century","End-century")
 plot_range <- c(floor(min(network2$cedi)*100)/100,
                 ceiling(max(network2$cedi)*100)/100)
@@ -167,13 +167,13 @@ for(i in rcps){
     p1 <- ggplot()+
       geom_sf(data=bioregion,fill="grey95",alpha=0.3,linewidth=0.25)+
       geom_sf(data=basemap)+
-      geom_sf(data=basemap%>%filter(name == "Canada"),fill="grey60")+
+      geom_sf(data=basemap%>%filter(name == "Canada"),fill="black")+
       geom_sf(data=network2%>%filter(focal !="focus",rcp == i,time_period == j),aes(fill=cedi),linewidth=0.4,col="black")+
       geom_sf(data=network2%>%filter(focal == "focus",rcp == i,time_period == j),aes(fill=cedi),linewidth=0.9,col="black")+
       theme_bw()+
       labs(fill="CEDI")+
       facet_grid(rcp ~ time_period)+
-      scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),
+      scale_fill_gradientn(colors = c("dodgerblue3", "khaki1", "darkorange", "red"), na.value = "white",
                            limits = plot_range,
                            guide = guide_colorbar(
                              frame.colour = "black",   # black outline around the colorbar
@@ -183,12 +183,12 @@ for(i in rcps){
     temp <- ggplot()+
             geom_sf(data=bioregion,fill="grey95",alpha=0.3,linewidth=0.25)+
             geom_sf(data=basemap)+
-            geom_sf(data=basemap%>%filter(name == "Canada"),fill="grey60")+
+            geom_sf(data=basemap%>%filter(name == "Canada"),fill="black")+
             geom_sf(data=network2%>%filter(rcp == i,time_period == j),aes(fill=cedi),linewidth=0.4,col="black")+
             theme_bw()+
             labs(fill="CEDI")+
             facet_grid(rcp ~ time_period)+
-            scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),
+            scale_fill_gradientn(colors = c("dodgerblue3", "khaki1", "darkorange", "red"), na.value = "white",
                                  limits = plot_range,
                                  guide = guide_colorbar(
                                    frame.colour = "black",   # black outline around the colorbar
@@ -196,7 +196,7 @@ for(i in rcps){
                                  ))
     
     
-    if(i == "SSPI-2.6" & j == "Mid-century"){
+    if(i == "SSP1-2.6" & j == "Mid-century"){
       
       temp2 <- p1+
                theme(legend.position = "none",
@@ -210,7 +210,7 @@ for(i in rcps){
       
     }
     
-    if(i == "SSPI-2.6" & j == "End-century"){
+    if(i == "SSP1-2.6" & j == "End-century"){
       
       temp2 <- p1+
                 theme(legend.position = "inside",
@@ -223,7 +223,7 @@ for(i in rcps){
       
     }
     
-    if(i == "SSPI-8.5" & j == "Mid-century"){
+    if(i == "SSP5-8.5" & j == "Mid-century"){
       
       temp2 <- p1+
               theme(legend.position = "none",
@@ -234,7 +234,7 @@ for(i in rcps){
       
     }
     
-    if(i == "SSPI-8.5" & j == "End-century"){
+    if(i == "SSP5-8.5" & j == "End-century"){
       
       temp2 <- p1+
                 theme(legend.position = "none",
