@@ -173,7 +173,12 @@ for(i in rcps){
       theme_bw()+
       labs(fill="CEDI")+
       facet_grid(rcp ~ time_period)+
-      scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),limits = plot_range)
+      scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),
+                           limits = plot_range,
+                           guide = guide_colorbar(
+                             frame.colour = "black",   # black outline around the colorbar
+                             ticks.colour = "black"    # black tick marks
+                           ))
     
     temp <- ggplot()+
             geom_sf(data=bioregion,fill="grey95",alpha=0.3,linewidth=0.25)+
@@ -183,7 +188,12 @@ for(i in rcps){
             theme_bw()+
             labs(fill="CEDI")+
             facet_grid(rcp ~ time_period)+
-            scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),limits = plot_range)
+            scale_fill_gradientn(colors = c("cornflowerblue", "yellow", "coral3"),
+                                 limits = plot_range,
+                                 guide = guide_colorbar(
+                                   frame.colour = "black",   # black outline around the colorbar
+                                   ticks.colour = "black"    # black tick marks
+                                 ))
     
     
     if(i == "SSPI-2.6" & j == "Mid-century"){
@@ -203,7 +213,9 @@ for(i in rcps){
     if(i == "SSPI-2.6" & j == "End-century"){
       
       temp2 <- p1+
-                theme(legend.position = "none",
+                theme(legend.position = "inside",
+                      legend.position.inside = c(0.90,0.18),
+                      legend.background = element_blank(),
                       axis.title = element_blank(),
                       axis.text = element_blank(),
                       strip.background = element_rect(fill="white"))+
